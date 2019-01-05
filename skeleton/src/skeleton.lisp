@@ -1,6 +1,6 @@
 (defpackage <% @var name %>
-  (:use :cl<% @if executable %>
-        :<% @var name %><% @endif %>))
+  (:use :cl)<% @if executable %>
+  (:export :main)<% @endif %>)
 (in-package :<% @var name %>)
 
 <% @if executable %>(defun exit-with-backtrace (c)
@@ -15,6 +15,4 @@
   (handler-bind
       ((error #'exit-with-backtrace))
     ;; blah blah blah.
-    (uiop:quit 0)))
-<% @else %>;; blah blah blah.
-<% @endif %>
+    (uiop:quit 0)))<% @else %>;; blah blah blah.<% @endif %>

@@ -4,7 +4,7 @@
   (:import-from #:cl-project.file
                 #:template-file-path)
   (:export #:*without-tests*
-           #:*without-makefile*))
+           #:*without-executable-files*))
 (in-package :cl-project.middleware)
 
 (defparameter *without-tests*
@@ -21,9 +21,16 @@
                               (namestring (template-file-path file)))))
         (funcall app file)))))
 
-(defparameter *without-makefile*
-  (lambda (app &key (makefile-name "Makefile"))
+(defparameter *without-executable-files*
+  (lambda (app &key
+            (makefile-name "Makefile")
+            (prep-quicklisp-name "src/prep-quicklisp.lisp"))
     (lambda (file)
-      (unless (string= (file-namestring (template-file-path file))
-                       makefile-name)
+      (unless (or
+               ;; Skip Makefile
+               (string= (file-namestring (template-file-path file))
+                        makefile-name)
+               ;; Skip prep-quicklisp
+               (string= (file-namestring (template-file-path file))
+                        prep-quicklisp-name))
         (funcall app file)))))

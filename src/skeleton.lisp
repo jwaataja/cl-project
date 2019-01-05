@@ -32,7 +32,7 @@
                      app)))
     (unless (getf *skeleton-parameters* :executable)
       (setf app
-            (funcall cl-project.middleware:*without-makefile*
+            (funcall cl-project.middleware:*without-executable-files*
                      app)))
     (mapcan app (skeleton-children skeleton))))
 
