@@ -3,7 +3,8 @@
   (:use #:cl)
   (:import-from #:cl-project.file
                 #:template-file-path)
-  (:export #:*without-tests*))
+  (:export #:*without-tests*
+           #:*without-makefile*))
 (in-package :cl-project.middleware)
 
 (defparameter *without-tests*
@@ -18,4 +19,11 @@
                ;; Skip test files
                (eql 0 (search (namestring test-directory)
                               (namestring (template-file-path file)))))
+        (funcall app file)))))
+
+(defparameter *without-makefile*
+  (lambda (app &key (makefile-name "Makefile"))
+    (lambda (file)
+      (unless (string= (file-namestring (template-file-path file))
+                       makefile-name)
         (funcall app file)))))

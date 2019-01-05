@@ -30,6 +30,10 @@
       (setf app
             (funcall cl-project.middleware:*without-tests*
                      app)))
+    (unless (getf *skeleton-parameters* :executable)
+      (setf app
+            (funcall cl-project.middleware:*without-makefile*
+                     app)))
     (mapcan app (skeleton-children skeleton))))
 
 (defun maptree (fn path)
